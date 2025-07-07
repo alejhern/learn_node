@@ -10,23 +10,7 @@
 //                                                                            //
 // ************************************************************************** //
 
-function sum(x, y) {
-	return (x + y);
-}
-
-function rest(x, y) {
-	return (x - y);
-}
-
-function multiply(x, y) {
-	return (x * y);
-}
-
-function div(x, y) {
-	if (y == 0)
-		return ("Cannot divide by zero");
-	return (x / y);
-}
+const math = require('./math.js');
 
 const readline = require('readline');
 
@@ -46,16 +30,16 @@ rl.question("Enter first number: ", function(first) {
 
             switch (op) {
                 case '+':
-                    result = sum(x, y);
+                    result = math.sum(x, y);
                     break;
                 case '-':
-                    result = rest(x, y);
+                    result = math.rest(x, y);
                     break;
                 case '*':
-                    result = multiply(x, y);
+                    result = math.multiply(x, y);
                     break;
                 case '/':
-                    result = div(x, y);
+                    result = math.div(x, y);
                     break;
                 default:
                     result = 'Invalid operation';
