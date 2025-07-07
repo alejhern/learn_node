@@ -12,11 +12,19 @@
 
 const fs = require('fs');
 
-fs.writeFile('hello.txt', 'Hello World!', function(err) {
+var result = fs.writeFile('hello.txt', 'Hello World!', function(err) {
     if (err) {
         console.log(err);
     } else {
         console.log("File written");
+    }
+});
+
+fs.appendFile('hello.txt', "\nGoodbye World!", function(err) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log("File appended");
     }
 });
 
