@@ -1,14 +1,15 @@
 {
   "dependencies": {
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "express": "^5.1.0"
   },
   "name": "learn_node",
   "version": "1.0.0",
   "main": "http.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node http.js"
+    "start": "node http.js",
+    "express": "node http_express.js"
   },
   "author": "Alejandro Hernandez",
   "license": "ISC",
