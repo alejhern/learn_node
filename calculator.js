@@ -24,7 +24,7 @@ function multiply(x, y) {
 
 function div(x, y) {
 	if (y == 0)
-		return (console.log("Can't not divide by 0"));
+		return ("Cannot divide by zero");
 	return (x / y);
 }
 
@@ -46,16 +46,16 @@ rl.question("Enter first number: ", function(first) {
 
             switch (op) {
                 case '+':
-                    result = x + y;
+                    result = sum(x, y);
                     break;
                 case '-':
-                    result = x - y;
+                    result = rest(x, y);
                     break;
                 case '*':
-                    result = x * y;
+                    result = multiply(x, y);
                     break;
                 case '/':
-                    result = y !== 0 ? x / y : 'Cannot divide by zero';
+                    result = div(x, y);
                     break;
                 default:
                     result = 'Invalid operation';
