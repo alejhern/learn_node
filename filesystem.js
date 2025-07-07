@@ -12,26 +12,40 @@
 
 const fs = require('fs');
 
-var result = fs.writeFile('hello.txt', 'Hello World!', function(err) {
+fs.writeFile('hello.txt', 'Hello World!', function(err) {
     if (err) {
         console.log(err);
     } else {
         console.log("File written");
+        fs.appendFile('hello.txt', "\nGoodbye World!", function(err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("File appended");
+                fs.rename('hello.txt', 'goodbye.txt', function(err) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("File renamed");
+                        fs.readFile('goodbye.txt', 'utf8', function(err, data) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log(data);
+                                fs.unlink('goodbye.txt', function(err) {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        console.log("File deleted");
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 });
 
-fs.appendFile('hello.txt', "\nGoodbye World!", function(err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log("File appended");
-    }
-});
 
-fs.readFile('hello.txt', 'utf8', function(err, data) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log(data);
-    }
-});
