@@ -15,6 +15,14 @@ const colors = require('colors');
 const fs = require('fs');
 const fsPromises = fs.promises;
 const path = require('path');
+const { logEvents } = require('./logEvents');
+const EventEmitter = require('events');
+
+class MyEmitter extends EventEmitter { }
+
+// Instancia del emisor
+const myEmitter = new MyEmitter();
+myEmitter.on('log', (msg) => logEvents(msg));
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -29,45 +37,28 @@ const serverFile = async (filePath, contentType, response) => {
         console.error(err);
         response.statusCode = 500;
         response.end('500 Internal Server Error');
+        myEmitter.emit('log', `500 Error: ${filePath} -> ${err.message}`);
     }
 };
 
 // Crear el servidor
 http.createServer(async (req, res) => {
-    // Normaliza la ruta para evitar ataques de directorio
     const safeUrl = path.normalize(req.url).replace(/^(\.\.[\/\\])+/, '');
     const extension = path.extname(safeUrl);
 
-    // Determinar el tipo de contenido según la extensión
     let contentType;
     switch (extension) {
-        case '.html':
-            contentType = 'text/html';
-            break;
-        case '.js':
-            contentType = 'text/javascript';
-            break;
-        case '.css':
-            contentType = 'text/css';
-            break;
-        case '.json':
-            contentType = 'application/json';
-            break;
-        case '.png':
-            contentType = 'image/png';
-            break;
+        case '.html': contentType = 'text/html'; break;
+        case '.js': contentType = 'text/javascript'; break;
+        case '.css': contentType = 'text/css'; break;
+        case '.json': contentType = 'application/json'; break;
+        case '.png': contentType = 'image/png'; break;
         case '.jpg':
-        case '.jpeg':
-            contentType = 'image/jpeg';
-            break;
-        case '.ico':
-            contentType = 'image/x-icon';
-            break;
-        default:
-            contentType = 'text/html';
+        case '.jpeg': contentType = 'image/jpeg'; break;
+        case '.ico': contentType = 'image/x-icon'; break;
+        default: contentType = 'text/html';
     }
 
-    // Determinar la ruta del archivo a servir
     let filePath;
     if (contentType === 'text/html') {
         if (safeUrl === '/' || safeUrl === '') {
@@ -78,7 +69,6 @@ http.createServer(async (req, res) => {
             filePath = path.join(__dirname, safeUrl);
         }
 
-        // Si no hay extensión y termina en "/", añade ".html"
         if (!extension && safeUrl.endsWith('/')) {
             filePath += '.html';
         }
@@ -86,13 +76,14 @@ http.createServer(async (req, res) => {
         filePath = path.join(__dirname, safeUrl);
     }
 
-    // Verificar si el archivo existe
     try {
         await fsPromises.access(filePath);
+        myEmitter.emit('log', `200 OK: ${filePath}`);
         serverFile(filePath, contentType, res);
     } catch {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('404 Not Found');
+        myEmitter.emit('log', `404 Not Found: ${filePath}`);
     }
 }).listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`.green);
