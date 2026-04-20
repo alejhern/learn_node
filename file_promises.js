@@ -10,10 +10,9 @@
 //                                                                            //
 // ************************************************************************** //
 
-const fs = require("node:fs").promises;
+const fs = require("node:fs/promises");
 const path = require("node:path");
-
-const fileOps = async () => {
+(async () => {
   try {
     const filePath = path.join(__dirname, "hello.txt");
     await fs.writeFile(filePath, "Hello World!", "utf8");
@@ -29,6 +28,4 @@ const fileOps = async () => {
   } catch (err) {
     console.log(err);
   }
-};
-
-fileOps();
+})();
