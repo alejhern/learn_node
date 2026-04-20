@@ -10,32 +10,32 @@
 //                                                                            //
 // ************************************************************************** //
 
-const fs = require('fs');
+const fs = require("node:fs");
 
-fs.readdir('.', function (err, files) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log(files);
-    }
+fs.readdir(".", function (err, files) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(files);
+  }
 });
 
-if (!fs.existsSync('test')) {
-    fs.mkdir('test', function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Directory created");
-        }
-    });
+if (!fs.existsSync("test")) {
+  fs.mkdir("test", function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Directory created");
+    }
+  });
 }
 
-if (fs.existsSync('test')) {
-    fs.rmdir('test', function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Directory deleted");
-        }
-    });
+if (fs.existsSync("test")) {
+  fs.rmdir("test", function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Directory deleted");
+    }
+  });
 }

@@ -10,7 +10,7 @@
 //                                                                            //
 // ************************************************************************** //
 
-const os = require('os');
+const os = require("node:os");
 
 console.log("homedir: " + os.homedir());
 console.log("tmpDir: " + os.tmpdir());

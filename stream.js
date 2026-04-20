@@ -10,10 +10,10 @@
 //                                                                            //
 // ************************************************************************** //
 
-const fs = require('fs');
+const fs = require("node:fs");
 
-const stream = fs.createReadStream('loremipsum.txt');
+const stream = fs.createReadStream("loremipsum.txt");
 
-const ws = fs.createWriteStream('loremipsum2.txt');
+const ws = fs.createWriteStream("loremipsum2.txt");
 
 stream.pipe(ws);

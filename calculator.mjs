@@ -1,0 +1,52 @@
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   calculator.js                                      :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: alejhern <alejhern@student.42barcelona.co  +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2025/07/07 11:57:31 by alejhern          #+#    #+#             //
+//   Updated: 2025/07/07 12:04:09 by alejhern         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
+
+import { div, multiply, rest, sum } from "./math.js";
+
+import { createInterface } from "node:readline";
+
+const rl = createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+console.log("Calculator");
+
+rl.question("Enter first number: ", function (first) {
+  rl.question("Enter second number: ", function (second) {
+    rl.question("Enter operation (+, -, *, /): ", function (op) {
+      const x = parseFloat(first);
+      const y = parseFloat(second);
+      let result;
+
+      switch (op) {
+        case "+":
+          result = sum(x, y);
+          break;
+        case "-":
+          result = rest(x, y);
+          break;
+        case "*":
+          result = multiply(x, y);
+          break;
+        case "/":
+          result = div(x, y);
+          break;
+        default:
+          result = "Invalid operation";
+      }
+
+      console.log(`Result: ${result}`);
+      rl.close();
+    });
+  });
+});

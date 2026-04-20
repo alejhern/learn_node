@@ -10,19 +10,19 @@
 //                                                                            //
 // ************************************************************************** //
 
-const dateFns = require('date-fns');
+import { addDays, format, subDays } from "date-fns";
 
-console.log(dateFns.format(new Date(), 'yyyy-MM-dd'));
-console.log(dateFns.format(new Date(), 'HH:mm:ss'));
+const now = new Date();
 
-console.log('--- 1 day ---');
-const date2 = new Date();
-date2.setDate(date2.getDate() + 1);
-console.log(dateFns.format(date2, 'yyyy-MM-dd'));
-console.log(dateFns.format(date2, 'HH:mm:ss'));
+console.log(format(now, "yyyy-MM-dd"));
+console.log(format(now, "HH:mm:ss"));
 
-console.log('--- 1 day ago ---');
-const date3 = new Date();
-date3.setDate(date3.getDate() - 1);
-console.log(dateFns.format(date3, 'yyyy-MM-dd'));
-console.log(dateFns.format(date3, 'HH:mm:ss'));
+console.log("--- 1 day ---");
+const tomorrow = addDays(now, 1);
+console.log(format(tomorrow, "yyyy-MM-dd"));
+console.log(format(tomorrow, "HH:mm:ss"));
+
+console.log("--- 1 day ago ---");
+const yesterday = subDays(now, 1);
+console.log(format(yesterday, "yyyy-MM-dd"));
+console.log(format(yesterday, "HH:mm:ss"));

@@ -10,81 +10,94 @@
 //                                                                            //
 // ************************************************************************** //
 
-const http = require('http');
-const colors = require('colors');
-const fs = require('fs');
+const http = require("node:http");
+const colors = require("colors");
+const fs = require("node:fs");
 const fsPromises = fs.promises;
-const path = require('path');
-const { logEvents } = require('./logEvents');
-const EventEmitter = require('events');
+const path = require("path");
+const { logEvents } = require("./logEvents");
+const EventEmitter = require("events");
 
-class MyEmitter extends EventEmitter { }
+class MyEmitter extends EventEmitter {}
 
 // Instancia del emisor
 const myEmitter = new MyEmitter();
-myEmitter.on('log', (msg) => logEvents(msg));
+myEmitter.on("log", (msg) => logEvents(msg));
 
-const hostname = '127.0.0.1';
+const hostname = "127.0.0.1";
 const port = 3000;
 
 // Función para servir archivos de forma asíncrona
 const serverFile = async (filePath, contentType, response) => {
-    try {
-        const data = await fsPromises.readFile(filePath);
-        response.writeHead(200, { 'Content-Type': contentType });
-        response.end(data);
-    } catch (err) {
-        console.error(err);
-        response.statusCode = 500;
-        response.end('500 Internal Server Error');
-        myEmitter.emit('log', `500 Error: ${filePath} -> ${err.message}`);
-    }
+  try {
+    const data = await fsPromises.readFile(filePath);
+    response.writeHead(200, { "Content-Type": contentType });
+    response.end(data);
+  } catch (err) {
+    console.error(err);
+    response.statusCode = 500;
+    response.end("500 Internal Server Error");
+    myEmitter.emit("log", `500 Error: ${filePath} -> ${err.message}`);
+  }
 };
 
 // Crear el servidor
-http.createServer(async (req, res) => {
-    const safeUrl = path.normalize(req.url).replace(/^(\.\.[\/\\])+/, '');
+http
+  .createServer(async (req, res) => {
+    const safeUrl = path.normalize(req.url).replace(/^(\.\.[\/\\])+/, "");
     const extension = path.extname(safeUrl);
 
     let contentType;
     switch (extension) {
-        case '.html': contentType = 'text/html'; break;
-        case '.js': contentType = 'text/javascript'; break;
-        case '.css': contentType = 'text/css'; break;
-        case '.json': contentType = 'application/json'; break;
-        case '.png': contentType = 'image/png'; break;
-        case '.jpg':
-        case '.jpeg': contentType = 'image/jpeg'; break;
-        case '.ico': contentType = 'image/x-icon'; break;
-        default: contentType = 'text/html';
+      case ".html":
+        contentType = "text/html";
+        break;
+      case ".js":
+        contentType = "text/javascript";
+        break;
+      case ".css":
+        contentType = "text/css";
+        break;
+      case ".json":
+        contentType = "application/json";
+        break;
+      case ".png":
+        contentType = "image/png";
+        break;
+      case ".jpg":
+      case ".jpeg":
+        contentType = "image/jpeg";
+        break;
+      case ".ico":
+        contentType = "image/x-icon";
+        break;
+      default:
+        contentType = "text/html";
     }
 
     let filePath;
-    if (contentType === 'text/html') {
-        if (safeUrl === '/' || safeUrl === '') {
-            filePath = path.join(__dirname, 'index.html');
-        } else if (safeUrl.endsWith('/')) {
-            filePath = path.join(__dirname, safeUrl, 'index.html');
-        } else {
-            filePath = path.join(__dirname, safeUrl);
-        }
-
-        if (!extension && safeUrl.endsWith('/')) {
-            filePath += '.html';
-        }
+    if (contentType === "text/html" && safeUrl === "/") {
+      filePath = path.join(__dirname, "views", "index.html");
+    } else if (contentType === "text/html") {
+      filePath = path.join(__dirname, "views", safeUrl);
     } else {
-        filePath = path.join(__dirname, safeUrl);
+      filePath = path.join(__dirname, safeUrl);
+    }
+
+    if (contentType === "text/html" && !path.extname(filePath)) {
+      filePath += ".html";
     }
 
     try {
-        await fsPromises.access(filePath);
-        myEmitter.emit('log', `200 OK: ${filePath}`);
-        serverFile(filePath, contentType, res);
+      await fsPromises.access(filePath);
+      myEmitter.emit("log", `200 OK: ${filePath}`);
+      serverFile(filePath, contentType, res);
     } catch {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 Not Found');
-        myEmitter.emit('log', `404 Not Found: ${filePath}`);
+      res.writeHead(404, { "Content-Type": "text/plain" });
+      res.end("404 Not Found");
+      myEmitter.emit("log", `404 Not Found: ${filePath}`);
     }
-}).listen(port, hostname, () => {
+  })
+  .listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`.green);
-});
+  });

@@ -10,29 +10,21 @@
 //                                                                            //
 // ************************************************************************** //
 
-const Math = {};
-
 function sum(x, y) {
-	return (x + y);
+  return x + y;
 }
 
 function rest(x, y) {
-	return (x - y);
+  return x - y;
 }
 
 function multiply(x, y) {
-	return (x * y);
+  return x * y;
 }
 
 function div(x, y) {
-	if (y == 0)
-		return ("Cannot divide by zero");
-	return (x / y);
+  if (y == 0) return "Cannot divide by zero";
+  return x / y;
 }
 
-Math.sum = sum;
-Math.rest = rest;
-Math.multiply = multiply;
-Math.div = div;
-
-module.exports = Math;
+module.exports = { sum, rest, multiply, div };
