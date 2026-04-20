@@ -11,6 +11,7 @@
 // ************************************************************************** //
 
 const fs = require("node:fs");
+const path = require("node:path");
 
 fs.readdir(".", function (err, files) {
   if (err) {
@@ -20,8 +21,8 @@ fs.readdir(".", function (err, files) {
   }
 });
 
-if (!fs.existsSync("test")) {
-  fs.mkdir("test", function (err) {
+if (!fs.existsSync("files")) {
+  fs.mkdir("files", function (err) {
     if (err) {
       console.log(err);
     } else {
@@ -30,12 +31,22 @@ if (!fs.existsSync("test")) {
   });
 }
 
-if (fs.existsSync("test")) {
-  fs.rmdir("test", function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Directory deleted");
-    }
+if (fs.existsSync("files")) {
+  const files = fs.readdirSync("files");
+  files.forEach((file) => {
+    const baseName = path.basename(file);
+    const extension = path.extname(file);
+    const filePath = path.join(__dirname, "files", file);
+    console.log(
+      `File: ${baseName}, Extension: ${extension}, Path: ${filePath}`,
+    );
   });
+
+  //   fs.rmdir("test", function (err) {
+  //     if (err) {
+  //       console.log(err);
+  //     } else {
+  //       console.log("Directory deleted");
+  //     }
+  //   });
 }
