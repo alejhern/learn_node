@@ -14,3 +14,4 @@ node_modules
 *.txt
 test
 package-lock.json
+*.http
