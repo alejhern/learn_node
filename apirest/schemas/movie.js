@@ -45,6 +45,10 @@ const movieSchema = z.object({
   }),
 });
 
-export default function validateMovie(movie) {
+export function validateMovie(movie) {
   return movieSchema.safeParse(movie);
+}
+
+export function validateMoviePartial(movie) {
+  return movieSchema.partial().safeParse(movie);
 }
