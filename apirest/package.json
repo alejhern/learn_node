@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cors": "2.8.6",
+    "express": "^5.1.0",
+    "uuid": "^11.1.0",
+    "zod": "4.3.6"
+  },
+  "name": "apirest",
+  "version": "1.0.0",
+  "main": "http.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node http.js",
+    "express": "node http_express.js"
+  },
+  "author": "Alejandro Hernandez",
+  "license": "ISC",
+  "description": ""
+}
