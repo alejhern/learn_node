@@ -1,8 +1,8 @@
 import "colors";
-import cors from "cors";
 import express from "express";
 import cripto from "node:crypto";
 import { createRequire } from "node:module";
+import corsMiddleware from "./cors.js";
 import validateMovie from "./schemas/movie.js";
 
 const require = createRequire(import.meta.url);
@@ -11,24 +11,7 @@ const movies = require("./movies.json");
 const app = express();
 
 app.use(express.json());
-
-const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",")
-  : ["http://localhost:8080"];
-
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true); // Postman / curl
-
-      if (ALLOWED_ORIGINS.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("Not allowed by CORS"));
-    },
-  }),
-);
+app.use(corsMiddleware);
 
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", ALLOWED_ORIGINS);
