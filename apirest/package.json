@@ -8,11 +8,11 @@
   },
   "name": "apirest",
   "version": "1.0.0",
+  "type": "module",
   "main": "http.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node http.js",
-    "express": "node http_express.js"
+    "start": "node http.js"
   },
   "author": "Alejandro Hernandez",
   "license": "ISC",

@@ -1,15 +1,20 @@
-const express = require("express");
-const colors = require("colors");
+import "colors";
+import cors from "cors";
+import express from "express";
+import cripto from "node:crypto";
+import { createRequire } from "node:module";
+import validateMovie from "./schemas/movie.js";
+
+const require = createRequire(import.meta.url);
 const movies = require("./movies.json");
-const cripto = require("node:crypto");
-const validateMovie = require("./schemas/movie");
-const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
 
-const ALLOWED_ORIGINS = ["http://localhost:8080"];
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",")
+  : ["http://localhost:8080"];
 
 app.use(
   cors({
@@ -41,7 +46,7 @@ app.use(
 // });
 
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
+  console.log(`${req.method}`.blue + ` ${req.url}`.yellow);
   next();
 });
 
@@ -136,7 +141,7 @@ app.use((req, res) => {
   res.status(404).json({ error: "Endpoint not found" });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ?? 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`.green);
 });

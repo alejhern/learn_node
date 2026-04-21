@@ -1,4 +1,4 @@
-const z = require("zod");
+import { z } from "zod";
 
 const movieSchema = z.object({
   title: z
@@ -45,8 +45,6 @@ const movieSchema = z.object({
   }),
 });
 
-function validateMovie(movie) {
+export default function validateMovie(movie) {
   return movieSchema.safeParse(movie);
 }
-
-module.exports = validateMovie;
