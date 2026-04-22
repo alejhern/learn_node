@@ -94,6 +94,8 @@ export class MoviesModel {
         .map((key) => `${key} = ?`)
         .join(", ");
 
+      if (updateData.genre) updateData.genre = JSON.stringify(updateData.genre);
+
       const values = Object.values(updateData);
       values.push(id);
 

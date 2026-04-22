@@ -1,110 +1,153 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Movies</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movies</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
-      padding: 20px;
-    }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        padding: 20px;
+      }
 
-    h1 {
-      margin-bottom: 20px;
-    }
+      h1 {
+        margin-bottom: 20px;
+      }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-    }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
 
-    .card {
-      background: #1e293b;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      transition: 0.2s;
-    }
+      .card {
+        background: #1e293b;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        transition: 0.2s;
+        display: flex;
+        flex-direction: column;
+      }
 
-    .card:hover {
-      transform: translateY(-5px);
-    }
+      .card:hover {
+        transform: translateY(-5px);
+      }
 
-    .poster {
-      width: 100%;
-      height: 350px;
-      object-fit: cover;
-    }
+      .poster {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+      }
 
-    .content {
-      padding: 15px;
-    }
+      .content {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
 
-    .title {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+      .actions {
+        margin-top: auto;
+        display: flex;
+        gap: 10px;
+      }
 
-    .year {
-      color: #94a3b8;
-      font-size: 0.9rem;
-    }
+      .title {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
 
-    .info {
-      margin-top: 10px;
-      font-size: 0.9rem;
-    }
+      .year {
+        color: #94a3b8;
+        font-size: 0.9rem;
+      }
 
-    .badge {
-      display: inline-block;
-      background: #22c55e;
-      color: #022c22;
-      padding: 3px 8px;
-      border-radius: 8px;
-      font-size: 0.75rem;
-      margin-top: 8px;
-      font-weight: bold;
-    }
+      .info {
+        margin-top: 10px;
+        font-size: 0.9rem;
+      }
 
-    .delete-btn {
-      margin-top: 10px;
-      width: 100%;
-      padding: 8px;
-      border: none;
-      border-radius: 8px;
-      background: #ef4444;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
+      .badge {
+        display: inline-block;
+        background: #22c55e;
+        color: #022c22;
+        padding: 3px 8px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        margin-top: 8px;
+        font-weight: bold;
+      }
 
-    .delete-btn:hover {
-      background: #dc2626;
-    }
-  </style>
-</head>
+      .delete-btn {
+        margin-top: 10px;
+        width: 100%;
+        padding: 8px;
+        border: none;
+        border-radius: 8px;
+        background: #ef4444;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.2s;
+      }
 
-<body>
-  <h1>🎬 Movie Catalog</h1>
-  <div id="app" class="grid"></div>
+      .delete-btn:hover {
+        background: #dc2626;
+      }
 
-  <script type="module">
-    const API_URL = "http://localhost:3000/movies";
+      .link-button {
+        display: inline-block;
+        margin-top: 10px;
+        width: 100%;
+        padding: 8px;
+        border: none;
+        border-radius: 8px;
+        background: #3b82f6;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+    </style>
+  </head>
 
-    function renderMovies(movies) {
-      const html = movies.map(movie => `
+  <body>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      "
+    >
+      <h1>🎬 Movie Catalog</h1>
+      <a href="/form.html" style="color: #3b82f6; font-weight: bold">
+        + Add Movie
+      </a>
+    </div>
+    <div id="app" class="grid"></div>
+
+    <script type="module">
+      const API_URL = "http://localhost:3000/movies";
+
+      function renderMovies(movies) {
+        const html = movies
+          .map(
+            (movie) => `
         <div class="card" id="movie-${movie.id}">
           <img class="poster" src="${movie.poster}" alt="${movie.title}">
           
@@ -116,49 +159,53 @@
               <p><strong>Genre:</strong> ${movie.genre.join(", ")}</p>
               <p><strong>Director:</strong> ${movie.director}</p>
               <p><strong>Duration:</strong> ${movie.duration} min</p>
+              ${movie.rate ? `<div class="badge">⭐ ${movie.rate}</div>` : ""}
             </div>
 
-            ${movie.rate 
-              ? `<div class="badge">⭐ ${movie.rate}</div>` 
-              : ""}
-
-            <button class="delete-btn" data-id="${movie.id}">
-              Delete
-            </button>
+            <div class="actions">
+              <button class="delete-btn" data-id="${movie.id}">
+                Delete
+              </button>
+              <a href="/form.html?id=${movie.id}" class="link-button">
+                Edit
+              </a>
+            </div>
           </div>
         </div>
-      `).join("");
+      `,
+          )
+          .join("");
 
-      document.getElementById("app").innerHTML = html;
-    }
-
-    function loadMovies() {
-      fetch(API_URL)
-        .then(res => res.json())
-        .then(renderMovies);
-    }
-
-    // 👇 Evento global para botones delete
-    document.addEventListener("click", (e) => {
-      if (e.target.matches(".delete-btn")) {
-        const id = e.target.dataset.id;
-
-        if (!confirm("Are you sure?")) return;
-
-        fetch(`${API_URL}/${id}`, {
-          method: "DELETE"
-        })
-        .then(res => {
-          if (!res.ok) throw new Error("Error deleting");
-
-          // 👇 eliminar del DOM sin recargar
-          document.getElementById(`movie-${id}`).remove();
-        })
-        .catch(err => console.error(err));
+        document.getElementById("app").innerHTML = html;
       }
-    });
 
-    loadMovies();
-  </script>
-</body>
+      function loadMovies() {
+        fetch(API_URL)
+          .then((res) => res.json())
+          .then(renderMovies);
+      }
+
+      // 👇 Evento global para botones delete
+      document.addEventListener("click", (e) => {
+        if (e.target.matches(".delete-btn")) {
+          const id = e.target.dataset.id;
+
+          if (!confirm("Are you sure?")) return;
+
+          fetch(`${API_URL}/${id}`, {
+            method: "DELETE",
+          })
+            .then((res) => {
+              if (!res.ok) throw new Error("Error deleting");
+
+              // 👇 eliminar del DOM sin recargar
+              document.getElementById(`movie-${id}`).remove();
+            })
+            .catch((err) => console.error(err));
+        }
+      });
+
+      loadMovies();
+    </script>
+  </body>
 </html>
