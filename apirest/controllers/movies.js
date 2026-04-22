@@ -4,14 +4,20 @@ import { validateMovie, validateMoviePartial } from "../schemas/movie.js";
 export class MoviesController {
   static getAll = async (req, res) => {
     const { title, genre, year, director } = req.query;
-    const filteredMovies = await MoviesModel.getAll({
+    const movies = await MoviesModel.getAll({
       title,
       genre,
       year,
       director,
     });
 
-    res.json(filteredMovies);
+    if (movies.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No movies found matching criteria" });
+    }
+
+    res.json(movies);
   };
 
   static getById = async (req, res) => {
