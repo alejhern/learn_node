@@ -2,8 +2,7 @@
   "dependencies": {
     "colors": "^1.4.0",
     "cors": "2.8.6",
-    "express": "^5.1.0",
-    "uuid": "^11.1.0",
+    "express": "5.1.0",
     "zod": "4.3.6"
   },
   "name": "apirest",
@@ -12,15 +11,15 @@
   "main": "http.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node http.js"
+    "start": "node server-local.js"
   },
   "author": "Alejandro Hernandez",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.2.1",
-    "globals": "^17.5.0",
-    "mysql2": "^3.22.2"
+    "@eslint/js": "10.0.1",
+    "eslint": "10.2.1",
+    "globals": "17.5.0",
+    "mysql2": "3.22.2"
   }
 }

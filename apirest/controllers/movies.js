@@ -1,10 +1,12 @@
-import { MoviesModel } from "../models/movies.js";
 import { validateMovie, validateMoviePartial } from "../schemas/movie.js";
-
 export class MoviesController {
-  static getAll = async (req, res) => {
+  constructor({ moviesModel }) {
+    this.moviesModel = moviesModel;
+  }
+
+  getAll = async (req, res) => {
     const { title, genre, year, director } = req.query;
-    const movies = await MoviesModel.getAll({
+    const movies = await this.moviesModel.getAll({
       title,
       genre,
       year,
@@ -20,8 +22,8 @@ export class MoviesController {
     res.json(movies);
   };
 
-  static getById = async (req, res) => {
-    const movie = await MoviesModel.getById(req.params.id);
+  getById = async (req, res) => {
+    const movie = await this.moviesModel.getById(req.params.id);
 
     if (!movie) {
       return res.status(404).json({ error: "Movie not found" });
@@ -30,7 +32,7 @@ export class MoviesController {
     res.json(movie);
   };
 
-  static create = async (req, res) => {
+  create = async (req, res) => {
     const result = await validateMovie(req.body);
 
     if (!result.success) {
@@ -38,12 +40,12 @@ export class MoviesController {
         error: result.error.issues,
       });
     }
-    const newMovie = await MoviesModel.create(result.data);
+    const newMovie = await this.moviesModel.create(result.data);
 
     res.status(201).json(newMovie);
   };
 
-  static update = async (req, res) => {
+  update = async (req, res) => {
     const { id } = req.params;
 
     const updatedMovie = req.body;
@@ -55,7 +57,7 @@ export class MoviesController {
       });
     }
 
-    const movie = await MoviesModel.update(id, result.data);
+    const movie = await this.moviesModel.update(id, result.data);
 
     if (!movie) {
       return res.status(404).json({ error: "Movie not found" });
@@ -64,10 +66,10 @@ export class MoviesController {
     res.json(movie);
   };
 
-  static delete = async (req, res) => {
+  delete = async (req, res) => {
     const { id } = req.params;
 
-    const success = await MoviesModel.delete(id);
+    const success = await this.moviesModel.delete(id);
 
     if (!success) {
       return res.status(404).json({ error: "Movie not found" });
